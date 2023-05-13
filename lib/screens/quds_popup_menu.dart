@@ -28,6 +28,8 @@ class QudsPopupButton extends StatefulWidget {
 
   final Color? backgroundColor;
 
+  final double? width;
+
   /// Create an instance of [QudsRadianButton].
   const QudsPopupButton(
       {Key? key,
@@ -38,6 +40,7 @@ class QudsPopupButton extends StatefulWidget {
       this.backgroundColor,
       this.radius,
       this.tooltip,
+      this.width,
       this.child})
       : assert(items.length > 0),
         super(key: key);
@@ -59,6 +62,7 @@ class _QudsPopupButtonState extends State<QudsPopupButton> {
             backgroundColor: widget.backgroundColor,
             context: context,
             items: widget.items,
+            width: widget.width,
           );
         },
         focusNode: widget.focusNode,
@@ -176,6 +180,7 @@ class QudsPopupMenuSection extends QudsPopupMenuBase {
 void showQudsPopupMenu(
     {required BuildContext context,
     required List<QudsPopupMenuBase> items,
+    double? width,
     bool useRootNavigator = false,
     Offset? startOffset,
     Offset? endOffset,
@@ -200,6 +205,7 @@ void showQudsPopupMenu(
           backgroundColor: backgroundColor,
           position: position,
           items: items,
+          width: width,
           barrierLabel:
               MaterialLocalizations.of(context).modalBarrierDismissLabel,
           capturedThemes:
@@ -209,8 +215,9 @@ void showQudsPopupMenu(
 class _QudsPopupMenu extends StatefulWidget {
   final Color? backgroundColor;
   final List<QudsPopupMenuBase> items;
+  final double? width;
 
-  const _QudsPopupMenu({Key? key, required this.items, this.backgroundColor})
+  const _QudsPopupMenu({Key? key, required this.items, this.backgroundColor, this.width})
       : super(key: key);
   @override
   State<StatefulWidget> createState() => _QudsPopupMenuState();
@@ -241,7 +248,7 @@ class _QudsPopupMenuState extends State<_QudsPopupMenu> {
                   alignment: AlignmentDirectional.topStart,
                   startAfterDuration: const Duration(milliseconds: 0),
                   child: SizedBox(
-                    width: 300,
+                    width: widget.width ?? 300,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -364,6 +371,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
     this.shape,
     this.color,
     this.backgroundColor,
+    this.width,
     required this.capturedThemes,
   }) : itemSizes = List<Size?>.filled(items.length, null);
 
@@ -376,6 +384,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
   final Color? color;
   final CapturedThemes capturedThemes;
   final Color? backgroundColor;
+  final double? width;
 
   @override
   Animation<double> createAnimation() {
@@ -404,6 +413,7 @@ class _PopupMenuRoute<T> extends PopupRoute<T> {
     final Widget menu = _QudsPopupMenu(
       backgroundColor: backgroundColor,
       items: items,
+      width: width,
     );
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     return MediaQuery.removePadding(
